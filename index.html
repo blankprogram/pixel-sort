@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Sorter</title>
+</head>
+<body>
+    <h1>Pixel Sorter</h1>
+
+    <input type="file" id="uploadInput" accept="image/*">
+    <button onclick="uploadImage()">Upload and Sort</button>
+
+    <h2>Sorted Image</h2>
+    <img id="resultImage" alt="Sorted Image" width="500px">
+
+    <script>
+        async function uploadImage() {
+            const fileInput = document.getElementById('uploadInput');
+            if (!fileInput.files.length) return;
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (data.path) {
+                document.getElementById('resultImage').src = data.path;
+            } else {
+                alert('Error uploading and sorting image.');
+            }
+        }
+    </script>
+</body>
+</html>
