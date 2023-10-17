@@ -13,6 +13,7 @@ def sort_pixels(image: Image, value: Callable, condition: Callable, rotation: in
 
     pixels = np.rot90(np.array(image), rotation)
     values = value(pixels)
+
     edges = np.apply_along_axis(lambda row: np.convolve(row, [-1, 1], 'same'), 0, condition(values))
     intervals = [np.flatnonzero(row) for row in edges]
 
@@ -37,6 +38,7 @@ def hue(pixels):
     r, g, b = np.split(pixels, 3, 2)
     return np.arctan2(np.sqrt(3) * (g - b), 2 * r - g - b)[:, :, 0]
 
+
 def sat(pixels):
     r, g, b = np.split(pixels, 3, 2)
     maximum = np.maximum(r, np.maximum(g, b))
@@ -56,6 +58,12 @@ def lightness(pixels):
     minimum = np.minimum(r, np.minimum(g, b))
     return ((maximum + minimum) / 2)[:, :, 0] / 255
 
+
+def luminance(pixels):
+    r, g, b = np.split(pixels, 3, 2)
+    return (0.299 * r + 0.587 * g + 0.114 * b)[:, :, 0] / 255
+
+
 app = Flask(__name__)
 CORS(app)
 UPLOAD_FOLDER = 'uploads'
@@ -73,25 +81,21 @@ def upload_image():
         return jsonify(error='No selected file')
     
     if file:
-            filename = os.path.join(UPLOAD_FOLDER, file.filename)
-            file.save(filename)
+        filename = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(filename)
 
-            with Image.open(filename).convert('RGB') as img:
-                
-                direction = request.form.get('direction', 'horizontal')
-                if direction == 'Right':
-                    rotation = 0
-                elif direction == 'Down':
-                    rotation = 1
-                elif direction == 'Left':
-                    rotation = 2
-                elif direction == 'Up':
-                   rotation = 3
+        with Image.open(filename).convert('RGB') as img:
+            direction = request.form.get('direction', 'horizontal')
+            if direction == 'Right':
+                rotation = 0
+            elif direction == 'Down':
+                rotation = 1
+            elif direction == 'Left':
+                rotation = 2
+            elif direction == 'Up':
+                rotation = 3
 
-                threshold_min = float(request.form.get('threshold_min', 0))
-                threshold_max = float(request.form.get('threshold_max', 1))
-
-                sort_method = request.form.get('sort_method', 'average')
+            sort_method = request.form.get('sort_method', 'average')
             if sort_method == 'hue':
                 value_func = hue
             elif sort_method == 'sat':
@@ -100,17 +104,22 @@ def upload_image():
                 value_func = laplace
             elif sort_method == 'lightness':
                 value_func = lightness
-            else:
-                value_func = lambda pixels: np.average(pixels, axis=2) / 255
-            condition = lambda lum: (lum > np.percentile(lum, threshold_min)) & (lum < np.percentile(lum, threshold_max))
-            sorted_img = sort_pixels(img,
-                                     value_func,
-                                     condition,
-                                     rotation)
+            elif sort_method == 'luminance':
+                value_func = luminance
 
+            interval_style = request.form.get('interval_style', 'none')
+            if interval_style == 'none':
+                condition = lambda lum: np.full(lum.shape, True)
+            elif interval_style == 'threshold':
+                threshold_min = float(request.form.get('threshold_min', 0))
+                threshold_max = float(request.form.get('threshold_max', 1))
+                condition = lambda lum: (lum > threshold_min/100) & (lum < threshold_max/100)
+                
+            sorted_img = sort_pixels(img, value_func, condition, rotation)
             sorted_img.save(filename)
             img.close()
             return jsonify(path=filename)
+
 
 @app.route('/')
 def index():

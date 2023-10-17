@@ -7,12 +7,25 @@ function App() {
 
   const uploadImage = async () => {
     try {
-      const formData = new FormData();
+      const formData = new FormData;
+      const direction = document.getElementById('direction').value;
+      const intervalStyle = document.getElementById('intervalStyle').value;
+      const sortMethod = document.getElementById('sortMethod').value;
+
       formData.append('file', selectedImage);
-      formData.append('direction', document.getElementById('direction').value);
-      formData.append('threshold_min', document.getElementById('thresholdMin').value);
-      formData.append('threshold_max', document.getElementById('thresholdMax').value);
-      formData.append('sort_method', document.getElementById('sortMethod').value);
+      formData.append('direction', direction);
+      formData.append('interval_style', intervalStyle);
+      formData.append('sort_method', sortMethod);
+
+      if (intervalStyle === 'threshold') {
+          const thresholdMin = document.getElementById('thresholdMin').value;
+          const thresholdMax = document.getElementById('thresholdMax').value;
+
+          formData.append('threshold_min', thresholdMin);
+          formData.append('threshold_max', thresholdMax);
+      }
+
+
       const response = await fetch('http://localhost:5000/upload', {
         method: 'POST',
         body: formData
