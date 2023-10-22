@@ -1,19 +1,41 @@
-# Pixel Sort
+---
 
-Pixel Sort is a tool that lets you sort the pixels of an image in various ways.
+# 🎨 Pixel Sort
+
+A simple demostration on the different styles of pixel sorting! 
 
 ![Pixel Sort Demonstration](./demo.gif)
 
-## 🚀 How to Use
+## 🌟 Features
 
-1. **Upload an Image**: Select an image from your device.
-2. **Choose Sorting Direction**: Options include `Up`, `Down`, `Left`, and `Right`.
-3. **Select Sorting Method**: Choose from `hue`, `saturation`, `laplace`, `lightness`, or `luminance`.
-4. **Sort**: Click the "Upload and Sort" button to view the sorted image.
+- **Sort Direction**: 🔄 Decide the orientation for your pixels to be sorted: `Up`, `Down`, `Left`, or `Right`.
+- **Interval Style**: 🔀 Choose the interval style for sorting. Options: `None` or `Threshold`.
+- **Sorting Method**: 🎚 Opt for a sorting parameter: `hue`, `saturation`, `laplace`, `lightness`, or `luminance`.
 
-## 🔧 Setup
+## 🚀 Quick Start
 
-- **Backend**: Run the Flask server by using python app.py in the root directory.
-- **Frontend**: Start the React app by moving into the `pixel-sorting-app` directory and using npm start.
+### **1. Upload an Image**
+Drag and drop or select an image from your device.
 
----
+### **2. Customize your Sort**
+- Set the sorting direction.
+- Determine your interval style.
+- Choose your sorting method.
+
+### **3. Sort the image**
+Hit the "Upload and Sort" button.
+
+## 🔧 Getting Started with Development
+
+### **Backend**
+🐍 Kick off the Flask server:
+```bash
+$ python app.py
+```
+### **Frontend**
+📦 Dive into the React app:
+```bash
+$ cd pixel-sorting-app
+$ npm install
+$ npm start
+```
