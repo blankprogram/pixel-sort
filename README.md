@@ -1,7 +1,9 @@
 # Pixel Sort
 
 Pixel Sort is a tool that lets you sort the pixels of an image in various ways.
+
 ![Pixel Sort Demonstration](./demo.gif)
+
 ## 🚀 How to Use
 
 1. **Upload an Image**: Select an image from your device.
@@ -11,7 +13,7 @@ Pixel Sort is a tool that lets you sort the pixels of an image in various ways.
 
 ## 🔧 Setup
 
-- **Backend**: Run the Flask server using the [`app.py`](https://github.com/blankprogram/pixel-sort/blob/main/app.py) file.
-- **Frontend**: Start the React app with instructions from the [`README.md`](https://github.com/blankprogram/pixel-sort/blob/main/pixel-sorting-app/README.md) inside the `pixel-sorting-app` directory.
+- **Backend**: Run the Flask server by using python app.py in the root directory.
+- **Frontend**: Start the React app by moving into the `pixel-sorting-app` directory and using npm start.
 
 ---
