@@ -29,12 +29,12 @@ Hit the "Upload and Sort" button.
 
 ### **Backend**
 🐍 Kick off the Flask server:
-```bash
+```console
 $ python app.py
 ```
 ### **Frontend**
 📦 Dive into the React app:
-```bash
+```console
 $ cd pixel-sorting-app
 $ npm install
 $ npm start
