@@ -120,7 +120,6 @@ def upload_image():
             img.close()
             return jsonify(path=filename)
 
-
 @app.route('/')
 def index():
     return open('index.html').read()
